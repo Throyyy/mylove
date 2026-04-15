@@ -934,17 +934,13 @@
                     <div class="dashboard-title">Memories</div>
                     <div class="dashboard-desc">Our beautiful moments</div>
                 </div>
-                <div class="glass-card dashboard-card" onclick="showSection('timeline')">
-                    <div class="dashboard-title">Timeline</div>
-                    <div class="dashboard-desc">Our journey together</div>
-                </div>
                 <div class="glass-card dashboard-card" onclick="showSection('gallery')">
                     <div class="dashboard-title">Gallery</div>
                     <div class="dashboard-desc">Photo collection</div>
                 </div>
                 <div class="glass-card dashboard-card" onclick="showSection('letters')">
-                    <div class="dashboard-title">Letters</div>
-                    <div class="dashboard-desc">Love messages</div>
+                    <div class="dashboard-title">Private</div>
+                    <div class="dashboard-desc">Our private photos</div>
                 </div>
                 <div class="glass-card dashboard-card" onclick="showSection('playlist')">
                     <div class="dashboard-title">Playlist</div>
@@ -954,10 +950,7 @@
                     <div class="dashboard-title">Future Plans</div>
                     <div class="dashboard-desc">Dreams together</div>
                 </div>
-                <div class="glass-card dashboard-card" onclick="showSection('countdown')">
-                    <div class="dashboard-title">Countdown</div>
-                    <div class="dashboard-desc">Special dates</div>
-                </div>
+
             </div>
         </section>
 
@@ -967,14 +960,6 @@
                 <h2 class="section-title">Memories</h2>
             </div>
             <div class="timeline" id="memoriesTimeline"></div>
-        </section>
-
-        <section class="section-page" id="timelineSection">
-            <div class="section-header">
-                <button class="back-btn" onclick="showSection('home')">← Back</button>
-                <h2 class="section-title">Timeline</h2>
-            </div>
-            <div class="timeline" id="mainTimeline"></div>
         </section>
 
         <section class="section-page" id="gallerySection">
@@ -988,9 +973,9 @@
         <section class="section-page" id="lettersSection">
             <div class="section-header">
                 <button class="back-btn" onclick="showSection('home')">← Back</button>
-                <h2 class="section-title">Letters</h2>
+                <h2 class="section-title">Private Photos</h2>
             </div>
-            <div class="letters-container" id="lettersContainer"></div>
+            <div class="gallery-grid" id="privateGalleryGrid"></div>
         </section>
 
         <section class="section-page" id="plansSection">
@@ -1097,16 +1082,6 @@
         <span class="lightbox-nav lightbox-next" onclick="nextImage()">›</span>
     </div>
 
-    <div class="password-modal" id="passwordModal">
-        <div class="glass-card password-box">
-            <div style="font-size: 3rem; margin-bottom: 15px;">🔒</div>
-            <h3 style="margin-bottom: 10px;">Private Letters</h3>
-            <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Enter password to view</p>
-            <input type="password" class="password-input" id="passwordInput" placeholder="Enter password...">
-            <button class="password-btn" onclick="checkPassword()">Unlock</button>
-        </div>
-    </div>
-
     <div class="easter-egg-modal" id="easterEggModal">
         <span class="easter-egg-close" onclick="closeEasterEgg()">×</span>
         <div class="easter-egg-content">
@@ -1121,20 +1096,32 @@
 
     <audio id="bgAudio" loop preload="auto" crossorigin="anonymous" playsinline></audio>
 
+    <div class="password-modal" id="passwordModal">
+        <div class="password-box glass-card">
+            <h3 style="margin-bottom: 10px;">Enter Password</h3>
+            <input id="passwordInput" class="password-input" type="password" placeholder="Enter password">
+            <button class="password-btn" onclick="checkPassword()">Unlock</button>
+        </div>
+    </div>
+
     <script>
         const START_DATE = new Date('2025-01-08');
-        const BACKGROUND_MUSIC = "bgmusicc.mp3";
+        const PASSWORD = 'love';
+        const BACKGROUND_MUSIC = "bgmusic.mp3";
 
         const galleryImages = [
-            'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&q=80',
-            'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80',
-            'https://images.unsplash.com/photo-1516589178581-6cd7833ae128?w=600&q=80',
-            'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&q=80',
-            'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80',
-            'https://images.unsplash.com/photo-1501901609772-df0848060b33?w=600&q=80',
-            'https://images.unsplash.com/photo-1523950817259-30556527dd0e?w=600&q=80',
-            'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&q=80'
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            
         ];
+
+        const privateImages = [];
 
         const memoriesTimelineData = [
             {
@@ -1236,6 +1223,7 @@
         ];
 
         let allImages = [];
+        let currentGallery = [];
         let currentImageIndex = 0;
         let hasUserInteracted = false;
 
@@ -1327,7 +1315,7 @@
 
         function checkPassword() {
             const input = document.getElementById('passwordInput');
-            if (input.value === 'love' || input.value === '') {
+            if (input.value === PASSWORD) {
                 document.getElementById('passwordModal').classList.remove('active');
                 document.getElementById('lettersSection').classList.add('active');
                 const backBtns = document.querySelectorAll('.back-btn');
