@@ -1119,7 +1119,7 @@
         </div>
     </div>
 
-    <audio id="bgAudio" loop preload="auto"></audio>
+    <audio id="bgAudio" loop preload="auto" crossorigin="anonymous" playsinline></audio>
 
     <script>
         const START_DATE = new Date('2025-01-08');
@@ -1458,10 +1458,11 @@
             const audio = document.getElementById('bgAudio');
             audio.src = BACKGROUND_MUSIC;
             audio.volume = 0.4;
-            audio.play().catch(() => {});
-
+            
             function tryPlay() {
-                audio.play().catch(() => {});
+                audio.play().catch((e) => {
+                    console.log('Audio play failed:', e);
+                });
             }
 
             function markInteraction() {
@@ -1471,9 +1472,12 @@
                 }
             }
 
-            document.addEventListener('click', markInteraction, { once: true });
-            document.addEventListener('touchstart', markInteraction, { once: true });
-            document.addEventListener('keydown', markInteraction, { once: true });
+            document.addEventListener('click', markInteraction);
+            document.addEventListener('touchstart', markInteraction);
+            document.addEventListener('touchend', markInteraction);
+            document.addEventListener('keydown', markInteraction);
+            
+            audio.load();
         }
 
         function initScrollAnimations() {
